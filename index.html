@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude Code Guide — Cheatsheet & Complete Guide</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --blue: #2563EB;
+    --blue-light: #3B82F6;
+    --orange: #E8562A;
+    --orange-light: #FF7A45;
+    --dark: #0F172A;
+    --gray-900: #111827;
+    --gray-700: #374151;
+    --gray-500: #6B7280;
+    --gray-400: #9CA3AF;
+    --gray-300: #D1D5DB;
+    --gray-200: #E5E7EB;
+    --gray-100: #F3F4F6;
+    --white: #FFFFFF;
+  }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, Arial, sans-serif;
+    background: var(--gray-100);
+    color: var(--gray-900);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+  }
+  .container { max-width: 800px; width: 100%; text-align: center; }
+  h1 {
+    font-size: 48px;
+    font-weight: 900;
+    letter-spacing: -2px;
+    margin-bottom: 8px;
+  }
+  h1 .highlight { color: var(--blue); }
+  .subtitle {
+    font-size: 18px;
+    color: var(--gray-500);
+    margin-bottom: 12px;
+  }
+  .follow-row { margin-bottom: 40px; }
+  .cards { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .card {
+    background: var(--white);
+    border: 2px solid var(--gray-200);
+    border-radius: 20px;
+    padding: 40px 32px;
+    text-decoration: none;
+    color: var(--gray-900);
+    transition: all 0.2s;
+    display: block;
+  }
+  .card:hover {
+    border-color: var(--blue);
+    box-shadow: 0 8px 30px rgba(37,99,235,0.12);
+    transform: translateY(-2px);
+  }
+  .card.orange:hover { border-color: var(--orange); box-shadow: 0 8px 30px rgba(232,86,42,0.12); }
+  .card-icon { font-size: 48px; margin-bottom: 16px; display: block; }
+  .card-title { font-size: 24px; font-weight: 800; margin-bottom: 8px; }
+  .card.blue .card-title { color: var(--blue); }
+  .card.orange .card-title { color: var(--orange); }
+  .card-desc { font-size: 15px; color: var(--gray-500); line-height: 1.5; }
+  .badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 700;
+    margin-top: 16px;
+  }
+  .card.blue .badge { background: #EFF6FF; color: var(--blue); }
+  .card.orange .badge { background: #FFF7ED; color: var(--orange); }
+  .footer {
+    margin-top: 40px;
+    font-size: 14px;
+    color: var(--gray-400);
+  }
+  .footer a { color: var(--gray-500); text-decoration: none; }
+  .footer a:hover { color: var(--gray-900); }
+  @media (max-width: 640px) {
+    .cards { grid-template-columns: 1fr; }
+    h1 { font-size: 36px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1><span class="highlight">Claude Code</span> Guide</h1>
+  <p class="subtitle">Updated February 2026 &mdash; Opus 4.6 &bull; Sonnet 4.5 &bull; Haiku</p>
+  <div class="follow-row">
+    <a href="https://twitter.com/ersinyilmaz?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-show-count="false">Follow @ersinyilmaz</a>
+    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+  </div>
+  <div class="cards">
+    <a href="cheatsheet.html" class="card blue">
+      <span class="card-icon">&#9889;</span>
+      <div class="card-title">Cheatsheet</div>
+      <div class="card-desc">Quick-reference card with all slash commands, keyboard shortcuts, CLI flags, best practices, and file locations.</div>
+      <span class="badge">Reference Card</span>
+    </a>
+    <a href="complete-guide.html" class="card orange">
+      <span class="card-icon">&#128218;</span>
+      <div class="card-title">Complete Guide</div>
+      <div class="card-desc">Full walkthrough from installation to advanced techniques. Capabilities, MCP, skills, prompting, and pricing.</div>
+      <span class="badge">9 Sections</span>
+    </a>
+  </div>
+  <div class="footer">
+    Built with Claude Code &bull; <a href="https://github.com/ersinyilmaz/claude-code-guide">GitHub</a>
+  </div>
+</div>
+</body>
+</html>

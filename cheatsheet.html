@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1600">
+<title>Claude Code Cheatsheet — February 2026</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --blue: #2563EB;
+    --blue-light: #3B82F6;
+    --blue-dark: #1E40AF;
+    --blue-bg: #EFF6FF;
+    --blue-100: #DBEAFE;
+    --dark: #0F172A;
+    --gray-900: #111827;
+    --gray-700: #374151;
+    --gray-500: #6B7280;
+    --gray-400: #9CA3AF;
+    --gray-300: #D1D5DB;
+    --gray-200: #E5E7EB;
+    --gray-100: #F3F4F6;
+    --gray-50: #F9FAFB;
+    --white: #FFFFFF;
+    --orange: #F59E0B;
+    --green: #10B981;
+    --purple: #8B5CF6;
+    --red: #EF4444;
+    --mono: 'SF Mono', 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+    --sans: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, Arial, sans-serif;
+  }
+  body { font-family: var(--sans); width: 1600px; background: var(--white); color: var(--gray-900); }
+
+  /* ── HERO ── */
+  .hero {
+    background: var(--dark);
+    color: var(--white);
+    padding: 50px 70px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .hero h1 { font-size: 52px; font-weight: 900; letter-spacing: -1.5px; }
+  .hero h1 span { color: var(--blue-light); }
+  .hero-right { text-align: right; }
+  .hero-badge { background: var(--blue); color: var(--white); padding: 6px 16px; border-radius: 8px; font-size: 14px; font-weight: 700; display: inline-block; margin-bottom: 6px; }
+  .hero-sub { color: var(--gray-400); font-size: 14px; }
+  .hero-handle { color: var(--gray-400); font-size: 14px; text-decoration: none; margin-top: 6px; display: block; }
+  .hero-handle:hover { color: var(--white); }
+
+  /* ── SECTIONS ── */
+  .content { padding: 0 70px 40px; }
+  .row { display: grid; gap: 30px; margin-bottom: 30px; }
+  .row-2 { grid-template-columns: 1fr 1fr; }
+  .row-3 { grid-template-columns: 1fr 1fr 1fr; }
+  .row-2-1 { grid-template-columns: 2fr 1fr; }
+
+  .card {
+    background: var(--white);
+    border: 2px solid var(--gray-200);
+    border-radius: 14px;
+    overflow: hidden;
+  }
+  .card-header {
+    background: var(--blue);
+    color: var(--white);
+    padding: 12px 20px;
+    font-size: 16px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    letter-spacing: 0.3px;
+  }
+  .card-header .icon { font-size: 18px; }
+  .card-body { padding: 16px 20px; }
+
+  /* ── TABLES ── */
+  .cmd-table { width: 100%; border-collapse: collapse; }
+  .cmd-table td { padding: 6px 0; font-size: 13.5px; vertical-align: top; border-bottom: 1px solid var(--gray-100); }
+  .cmd-table tr:last-child td { border-bottom: none; }
+  .cmd-name { font-family: var(--mono); font-weight: 700; color: var(--blue-dark); white-space: nowrap; padding-right: 16px !important; font-size: 13px; }
+  .cmd-desc { color: var(--gray-700); }
+
+  /* ── SHORTCUTS ── */
+  .shortcut-group { margin-bottom: 14px; }
+  .shortcut-group:last-child { margin-bottom: 0; }
+  .shortcut-label { font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: var(--blue); margin-bottom: 8px; }
+  .shortcut-row { display: flex; align-items: center; gap: 10px; padding: 4px 0; }
+  .kbd {
+    background: var(--gray-100);
+    border: 1px solid var(--gray-300);
+    border-radius: 5px;
+    padding: 2px 8px;
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--gray-900);
+    white-space: nowrap;
+    min-width: 70px;
+    text-align: center;
+    display: inline-block;
+  }
+  .shortcut-desc { font-size: 13px; color: var(--gray-700); }
+
+  /* ── CLI ── */
+  .cli-row { display: flex; gap: 8px; padding: 5px 0; border-bottom: 1px solid var(--gray-100); align-items: baseline; }
+  .cli-row:last-child { border-bottom: none; }
+  .cli-cmd { font-family: var(--mono); font-size: 12.5px; font-weight: 600; color: var(--dark); white-space: nowrap; min-width: 310px; }
+  .cli-desc { font-size: 13px; color: var(--gray-500); }
+
+  /* ── BEST PRACTICES ── */
+  .bp-item { display: flex; gap: 10px; padding: 6px 0; border-bottom: 1px solid var(--gray-100); align-items: flex-start; }
+  .bp-item:last-child { border-bottom: none; }
+  .bp-icon { color: var(--green); font-size: 14px; margin-top: 2px; flex-shrink: 0; }
+  .bp-text { font-size: 13.5px; color: var(--gray-700); line-height: 1.4; }
+
+  /* ── FILE TREE ── */
+  .file-tree { font-family: var(--mono); font-size: 13px; line-height: 1.7; color: var(--gray-700); }
+  .file-tree .dir { color: var(--blue-dark); font-weight: 700; }
+  .file-tree .comment { color: var(--gray-400); font-style: italic; }
+
+  /* ── TIER DIAGRAM ── */
+  .tier-row { display: flex; align-items: center; gap: 14px; padding: 8px 0; }
+  .tier-badge {
+    border-radius: 8px;
+    padding: 4px 12px;
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--white);
+    white-space: nowrap;
+    min-width: 80px;
+    text-align: center;
+  }
+  .tier-badge.t1 { background: var(--blue); }
+  .tier-badge.t2 { background: var(--purple); }
+  .tier-badge.t3 { background: var(--orange); }
+  .tier-badge.t4 { background: var(--green); }
+  .tier-path { font-family: var(--mono); font-size: 12.5px; color: var(--gray-700); min-width: 220px; }
+  .tier-desc { font-size: 13px; color: var(--gray-500); }
+
+  /* ── FILE REF ── */
+  .ref-row { display: flex; align-items: center; gap: 14px; padding: 7px 0; border-bottom: 1px solid var(--gray-100); }
+  .ref-row:last-child { border-bottom: none; }
+  .ref-syntax { font-family: var(--mono); font-size: 14px; font-weight: 700; color: var(--blue-dark); min-width: 100px; }
+  .ref-arrow { color: var(--gray-400); }
+  .ref-example { font-family: var(--mono); font-size: 13px; color: var(--gray-500); }
+
+  /* ── FOOTER ── */
+  .footer {
+    background: var(--dark);
+    color: var(--gray-400);
+    padding: 20px 70px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+  }
+  .footer strong { color: var(--white); }
+</style>
+</head>
+<body>
+
+<!-- ══════ HERO ══════ -->
+<section class="hero">
+  <div>
+    <h1><span>Claude Code</span> Cheatsheet</h1>
+  </div>
+  <div class="hero-right">
+    <div class="hero-badge">Updated February 2026</div>
+    <div class="hero-sub">Opus 4.6 &bull; Sonnet 4.5 &bull; Haiku</div>
+    <div style="margin-top: 8px;"><a href="https://twitter.com/ersinyilmaz?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-show-count="false">Follow @ersinyilmaz</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script></div>
+  </div>
+</section>
+
+<div class="content" style="padding-top: 30px;">
+
+  <!-- ══════ ROW 1: Slash Commands + Keyboard Shortcuts ══════ -->
+  <div class="row row-2">
+
+    <!-- Slash Commands -->
+    <div class="card">
+      <div class="card-header"><span class="icon">&#9889;</span> Slash Commands</div>
+      <div class="card-body" style="columns: 2; column-gap: 30px;">
+        <table class="cmd-table">
+          <tr><td class="cmd-name">/clear</td><td class="cmd-desc">Clear conversation history</td></tr>
+          <tr><td class="cmd-name">/compact</td><td class="cmd-desc">Compress conversation to save tokens</td></tr>
+          <tr><td class="cmd-name">/context</td><td class="cmd-desc">Visualize context usage</td></tr>
+          <tr><td class="cmd-name">/model</td><td class="cmd-desc">Switch model + effort level</td></tr>
+          <tr><td class="cmd-name">/cost</td><td class="cmd-desc">Show token &amp; cost usage</td></tr>
+          <tr><td class="cmd-name">/tasks</td><td class="cmd-desc">List background tasks</td></tr>
+          <tr><td class="cmd-name">/memory</td><td class="cmd-desc">Edit CLAUDE.md files</td></tr>
+          <tr><td class="cmd-name">/init</td><td class="cmd-desc">Initialize project with CLAUDE.md</td></tr>
+          <tr><td class="cmd-name">/config</td><td class="cmd-desc">Open settings interface</td></tr>
+          <tr><td class="cmd-name">/permissions</td><td class="cmd-desc">View/update permissions</td></tr>
+          <tr><td class="cmd-name">/mcp</td><td class="cmd-desc">Manage MCP connections</td></tr>
+          <tr><td class="cmd-name">/hooks</td><td class="cmd-desc">Configure event hooks</td></tr>
+          <tr><td class="cmd-name">/agents</td><td class="cmd-desc">Manage subagents</td></tr>
+          <tr><td class="cmd-name">/review</td><td class="cmd-desc">Request code review</td></tr>
+          <tr><td class="cmd-name">/plan</td><td class="cmd-desc">Enter plan mode</td></tr>
+          <tr><td class="cmd-name">/rewind</td><td class="cmd-desc">Rewind conversation/code</td></tr>
+          <tr><td class="cmd-name">/export</td><td class="cmd-desc">Export conversation to file</td></tr>
+          <tr><td class="cmd-name">/copy</td><td class="cmd-desc">Copy last response to clipboard</td></tr>
+          <tr><td class="cmd-name">/rename</td><td class="cmd-desc">Name current session</td></tr>
+          <tr><td class="cmd-name">/stats</td><td class="cmd-desc">View usage statistics</td></tr>
+          <tr><td class="cmd-name">/todos</td><td class="cmd-desc">List current TODO items</td></tr>
+          <tr><td class="cmd-name">/debug</td><td class="cmd-desc">Troubleshoot session issues</td></tr>
+          <tr><td class="cmd-name">/theme</td><td class="cmd-desc">Change color theme</td></tr>
+          <tr><td class="cmd-name">/doctor</td><td class="cmd-desc">Check installation health</td></tr>
+          <tr><td class="cmd-name">/help</td><td class="cmd-desc">Show all available commands</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- Keyboard Shortcuts -->
+    <div class="card">
+      <div class="card-header"><span class="icon">&#9000;</span> Keyboard Shortcuts</div>
+      <div class="card-body">
+        <div class="shortcut-group">
+          <div class="shortcut-label">Essential</div>
+          <div class="shortcut-row"><span class="kbd">Esc</span><span class="shortcut-desc">Cancel / Stop generation</span></div>
+          <div class="shortcut-row"><span class="kbd">Esc + Esc</span><span class="shortcut-desc">Rewind to checkpoint</span></div>
+          <div class="shortcut-row"><span class="kbd">Shift+Tab</span><span class="shortcut-desc">Cycle modes: Auto &#8594; Plan &#8594; Delegate</span></div>
+          <div class="shortcut-row"><span class="kbd">Ctrl+V</span><span class="shortcut-desc">Paste image from clipboard</span></div>
+          <div class="shortcut-row"><span class="kbd">Alt+T</span><span class="shortcut-desc">Toggle Extended Thinking</span></div>
+          <div class="shortcut-row"><span class="kbd">Ctrl+B</span><span class="shortcut-desc">Send task to background</span></div>
+          <div class="shortcut-row"><span class="kbd">Ctrl+T</span><span class="shortcut-desc">Toggle task list</span></div>
+          <div class="shortcut-row"><span class="kbd">@</span><span class="shortcut-desc">File / folder mention</span></div>
+          <div class="shortcut-row"><span class="kbd">!</span><span class="shortcut-desc">Run shell command directly</span></div>
+        </div>
+        <div class="shortcut-group">
+          <div class="shortcut-label">Editing</div>
+          <div class="shortcut-row"><span class="kbd">Ctrl+U</span><span class="shortcut-desc">Delete entire line</span></div>
+          <div class="shortcut-row"><span class="kbd">Ctrl+K</span><span class="shortcut-desc">Delete to end of line</span></div>
+          <div class="shortcut-row"><span class="kbd">Ctrl+R</span><span class="shortcut-desc">Reverse search history</span></div>
+          <div class="shortcut-row"><span class="kbd">Ctrl+G</span><span class="shortcut-desc">Open in text editor</span></div>
+          <div class="shortcut-row"><span class="kbd">Ctrl+Y</span><span class="shortcut-desc">Paste deleted text</span></div>
+          <div class="shortcut-row"><span class="kbd">Alt+B/F</span><span class="shortcut-desc">Move cursor by word</span></div>
+        </div>
+        <div class="shortcut-group">
+          <div class="shortcut-label">Display</div>
+          <div class="shortcut-row"><span class="kbd">Ctrl+L</span><span class="shortcut-desc">Clear terminal screen</span></div>
+          <div class="shortcut-row"><span class="kbd">Ctrl+O</span><span class="shortcut-desc">Toggle verbose output</span></div>
+          <div class="shortcut-row"><span class="kbd">Alt+P</span><span class="shortcut-desc">Switch model without clearing</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════ ROW 2: CLI Commands + File References ══════ -->
+  <div class="row row-2-1">
+
+    <!-- CLI Commands -->
+    <div class="card">
+      <div class="card-header"><span class="icon">&gt;_</span> CLI Commands</div>
+      <div class="card-body">
+        <div class="cli-row"><span class="cli-cmd">claude</span><span class="cli-desc">Start interactive session</span></div>
+        <div class="cli-row"><span class="cli-cmd">claude "fix the login bug"</span><span class="cli-desc">One-shot task</span></div>
+        <div class="cli-row"><span class="cli-cmd">claude -p "query"</span><span class="cli-desc">Print mode (non-interactive, pipe-friendly)</span></div>
+        <div class="cli-row"><span class="cli-cmd">claude -p --max-turns 3 "query"</span><span class="cli-desc">Limit conversation turns</span></div>
+        <div class="cli-row"><span class="cli-cmd">claude -c / --continue</span><span class="cli-desc">Continue most recent session</span></div>
+        <div class="cli-row"><span class="cli-cmd">claude -r / --resume</span><span class="cli-desc">Resume session (interactive picker)</span></div>
+        <div class="cli-row"><span class="cli-cmd">claude --add-dir /path</span><span class="cli-desc">Add directory to context</span></div>
+        <div class="cli-row"><span class="cli-cmd">claude --output-format json</span><span class="cli-desc">Output as JSON</span></div>
+        <div class="cli-row"><span class="cli-cmd">claude --json-schema '{...}'</span><span class="cli-desc">Structured output with validation</span></div>
+        <div class="cli-row"><span class="cli-cmd">claude --max-budget-usd 5</span><span class="cli-desc">Set dollar spend limit</span></div>
+        <div class="cli-row"><span class="cli-cmd">claude --chrome</span><span class="cli-desc">Enable Chrome browser integration</span></div>
+        <div class="cli-row"><span class="cli-cmd">claude --remote</span><span class="cli-desc">Create web session on claude.ai</span></div>
+        <div class="cli-row"><span class="cli-cmd">claude --fallback-model sonnet</span><span class="cli-desc">Auto fallback when overloaded</span></div>
+        <div class="cli-row"><span class="cli-cmd">claude update</span><span class="cli-desc">Update to latest version</span></div>
+        <div class="cli-row"><span class="cli-cmd">claude --version</span><span class="cli-desc">Check current version</span></div>
+      </div>
+    </div>
+
+    <!-- File References -->
+    <div class="card">
+      <div class="card-header"><span class="icon">@</span> File References</div>
+      <div class="card-body">
+        <div class="ref-row"><span class="ref-syntax">@filename</span><span class="ref-arrow">&#8594;</span><span class="ref-example">@report.csv</span></div>
+        <div class="ref-row"><span class="ref-syntax">@folder/</span><span class="ref-arrow">&#8594;</span><span class="ref-example">@data/</span></div>
+        <div class="ref-row"><span class="ref-syntax">Tab</span><span class="ref-arrow">&#8594;</span><span class="ref-example">Autocomplete paths</span></div>
+
+        <div style="margin-top: 20px; padding-top: 14px; border-top: 2px solid var(--gray-200);">
+          <div class="shortcut-label" style="margin-bottom: 10px;">Models</div>
+          <div style="font-size: 13px; color: var(--gray-700); line-height: 1.8;">
+            <strong style="color: var(--blue-dark);">Opus 4.6</strong> &#8212; Deep reasoning<br>
+            <strong style="color: var(--blue-dark);">Sonnet 4.5</strong> &#8212; Daily coding<br>
+            <strong style="color: var(--blue-dark);">Haiku</strong> &#8212; Quick tasks<br>
+            <strong style="color: var(--blue-dark);">sonnet[1m]</strong> &#8212; 1M context<br>
+            <strong style="color: var(--blue-dark);">opusplan</strong> &#8212; Opus plan, Sonnet exec
+          </div>
+          <div style="margin-top: 12px; font-size: 12px; color: var(--gray-500);">
+            Effort levels (Opus): low / medium / high
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════ ROW 3: Best Practices + Key File Locations ══════ -->
+  <div class="row row-2">
+
+    <!-- Best Practices -->
+    <div class="card">
+      <div class="card-header"><span class="icon">&#11088;</span> Best Practices</div>
+      <div class="card-body">
+        <div class="bp-item"><span class="bp-icon">&#10003;</span><span class="bp-text">Use <strong>CLAUDE.md</strong> per project for persistent context (checked into git)</span></div>
+        <div class="bp-item"><span class="bp-icon">&#10003;</span><span class="bp-text">Organize configs in tiers: <strong>Global &#8594; Category &#8594; Project</strong></span></div>
+        <div class="bp-item"><span class="bp-icon">&#10003;</span><span class="bp-text">Use <strong>/compact</strong> regularly to save context window space</span></div>
+        <div class="bp-item"><span class="bp-icon">&#10003;</span><span class="bp-text">Start sessions in <strong>Plan mode</strong>, switch to Auto-Accept for execution</span></div>
+        <div class="bp-item"><span class="bp-icon">&#10003;</span><span class="bp-text">Run <strong>3-5 parallel</strong> Claude instances in numbered terminal tabs</span></div>
+        <div class="bp-item"><span class="bp-icon">&#10003;</span><span class="bp-text">Use <strong>/clear</strong> between unrelated tasks to reset context</span></div>
+        <div class="bp-item"><span class="bp-icon">&#10003;</span><span class="bp-text">Keep MCP tools under <strong>10% of context</strong> window to avoid bloat</span></div>
+        <div class="bp-item"><span class="bp-icon">&#10003;</span><span class="bp-text">Use <strong>--max-budget-usd</strong> for cost control on expensive tasks</span></div>
+        <div class="bp-item"><span class="bp-icon">&#10003;</span><span class="bp-text">Set up <strong>hooks</strong> for pre-commit validation and session-start intelligence</span></div>
+        <div class="bp-item"><span class="bp-icon">&#10003;</span><span class="bp-text">Create custom <strong>skills</strong> (SKILL.md) for repeated workflows</span></div>
+      </div>
+    </div>
+
+    <!-- Key File Locations -->
+    <div class="card">
+      <div class="card-header"><span class="icon">&#128193;</span> Key File Locations</div>
+      <div class="card-body">
+        <div class="shortcut-label" style="margin-bottom: 8px;">Global (~/.claude/)</div>
+        <div class="file-tree">
+          <span class="dir">settings.json</span> <span class="comment">&#8212; model, permissions, hooks</span><br>
+          <span class="dir">CLAUDE.md</span> <span class="comment">&#8212; personal preferences</span><br>
+          <span class="dir">CLAUDE.local.md</span> <span class="comment">&#8212; local overrides (.gitignored)</span><br>
+          <span class="dir">skills/</span> <span class="comment">&#8212; SKILL.md-based automations</span><br>
+          <span class="dir">agents/</span> <span class="comment">&#8212; custom subagents</span><br>
+          <span class="dir">rules/</span> <span class="comment">&#8212; global rules</span><br>
+          <span class="dir">commands/</span> <span class="comment">&#8212; custom slash commands</span><br>
+          <span class="dir">helpers/</span> <span class="comment">&#8212; scripts (apiKeyHelper, statusLine)</span>
+        </div>
+        <div class="shortcut-label" style="margin: 16px 0 8px;">Project (.claude/)</div>
+        <div class="file-tree">
+          <span class="dir">settings.json</span> <span class="comment">&#8212; project settings</span><br>
+          <span class="dir">CLAUDE.md</span> <span class="comment">&#8212; project memory (team-shared)</span><br>
+          <span class="dir">CLAUDE.local.md</span> <span class="comment">&#8212; personal overrides</span><br>
+          <span class="dir">agents/</span> <span class="comment">&#8212; project subagents</span><br>
+          <span class="dir">rules/</span> <span class="comment">&#8212; project rules</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════ ROW 4: 4-Tier Config Hierarchy ══════ -->
+  <div class="row" style="grid-template-columns: 1fr;">
+    <div class="card">
+      <div class="card-header"><span class="icon">&#127969;</span> Suggested Config Hierarchy (4-Tier)</div>
+      <div class="card-body" style="padding: 20px 24px;">
+        <div class="tier-row">
+          <span class="tier-badge t1">Tier 1</span>
+          <span class="tier-path">~/.claude/</span>
+          <span style="font-size: 15px; font-weight: 700; color: var(--gray-900); min-width: 120px;">Global</span>
+          <span class="tier-desc">Model, permissions, hooks, skills, agents, rules</span>
+        </div>
+        <div class="tier-row" style="padding-left: 40px;">
+          <span class="tier-badge t2">Tier 2</span>
+          <span class="tier-path">~/work/ or ~/personal/</span>
+          <span style="font-size: 15px; font-weight: 700; color: var(--gray-900); min-width: 120px;">Category</span>
+          <span class="tier-desc">Work vs personal context and preferences</span>
+        </div>
+        <div class="tier-row" style="padding-left: 80px;">
+          <span class="tier-badge t3">Tier 3</span>
+          <span class="tier-path">~/work/client-a/</span>
+          <span style="font-size: 15px; font-weight: 700; color: var(--gray-900); min-width: 120px;">Team</span>
+          <span class="tier-desc">API keys, MCP servers, git identity per workspace</span>
+        </div>
+        <div class="tier-row" style="padding-left: 120px;">
+          <span class="tier-badge t4">Tier 4</span>
+          <span class="tier-path">~/work/client-a/my-app/</span>
+          <span style="font-size: 15px; font-weight: 700; color: var(--gray-900); min-width: 120px;">Project</span>
+          <span class="tier-desc">Project-specific CLAUDE.md context</span>
+        </div>
+        <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--gray-200); font-size: 12.5px; color: var(--gray-500); text-align: center;">
+          Each tier inherits from the one above. No duplication needed &#8212; configs cascade automatically.
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══════ FOOTER ══════ -->
+<div class="footer">
+  <span>Claude Code Cheatsheet &bull; <strong>February 2026</strong></span>
+  <span>Opus 4.6 &bull; Sonnet 4.5 &bull; Haiku &bull; Fast Mode &bull; Extended Thinking</span>
+</div>
+
+</body>
+</html>

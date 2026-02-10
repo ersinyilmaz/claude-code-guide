@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1600">
+<title>Master Claude Code — The Complete Guide (February 2026)</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --orange: #E8562A;
+    --orange-light: #FF7A45;
+    --orange-bg: #FFF7ED;
+    --orange-100: #FFEDD5;
+    --blue: #2563EB;
+    --blue-light: #3B82F6;
+    --blue-bg: #EFF6FF;
+    --dark: #1A1A2E;
+    --gray-900: #111827;
+    --gray-700: #374151;
+    --gray-500: #6B7280;
+    --gray-400: #9CA3AF;
+    --gray-300: #D1D5DB;
+    --gray-200: #E5E7EB;
+    --gray-100: #F3F4F6;
+    --gray-50: #F9FAFB;
+    --white: #FFFFFF;
+    --green: #059669;
+    --purple: #7C3AED;
+    --mono: 'SF Mono', 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+    --sans: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, Arial, sans-serif;
+  }
+  body { font-family: var(--sans); width: 1600px; background: var(--white); color: var(--gray-900); }
+
+  /* ── HERO ── */
+  .hero {
+    background: linear-gradient(135deg, var(--dark) 0%, #16213E 100%);
+    color: var(--white);
+    padding: 50px 70px 44px;
+    position: relative;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    top: -80px; right: -80px;
+    width: 350px; height: 350px;
+    background: radial-gradient(circle, rgba(232,86,42,0.12) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .hero-top { display: flex; justify-content: space-between; align-items: flex-start; }
+  .hero h1 { font-size: 54px; font-weight: 900; letter-spacing: -2px; }
+  .hero h1 span { color: var(--orange); }
+  .hero-right-group { text-align: right; }
+  .hero-badge { background: var(--orange); color: var(--white); padding: 6px 16px; border-radius: 8px; font-size: 14px; font-weight: 700; display: inline-block; margin-bottom: 6px; }
+  .hero-models { color: var(--gray-400); font-size: 14px; }
+  .hero-handle { color: var(--gray-400); font-size: 14px; text-decoration: none; margin-top: 6px; display: block; }
+  .hero-handle:hover { color: var(--white); }
+  .hero-sub { font-size: 22px; font-weight: 300; color: rgba(255,255,255,0.8); margin-top: 12px; max-width: 800px; }
+
+  /* ── SECTIONS ── */
+  .section { padding: 36px 70px; }
+  .section-header { display: flex; align-items: center; gap: 14px; margin-bottom: 22px; }
+  .section-num { background: var(--orange); color: var(--white); font-size: 16px; font-weight: 800; width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; }
+  .section-title { font-size: 26px; font-weight: 800; color: var(--gray-900); letter-spacing: -0.5px; }
+  .divider { height: 2px; background: linear-gradient(90deg, var(--orange) 0%, var(--gray-200) 30%, transparent 100%); margin: 0 70px; }
+
+  /* ── COMPARISON TABLE (Section 1) ── */
+  .compare-grid { display: grid; grid-template-columns: 1fr auto 1fr; gap: 0; align-items: stretch; }
+  .compare-col { padding: 20px 30px; }
+  .compare-col.chat { background: #FEE2E2; border-radius: 14px 0 0 14px; }
+  .compare-col.vs { display: flex; align-items: center; justify-content: center; padding: 10px; font-size: 24px; font-weight: 900; color: var(--gray-400); }
+  .compare-col.code { background: #DCFCE7; border-radius: 0 14px 14px 0; }
+  .compare-col h3 { font-size: 18px; margin-bottom: 14px; }
+  .compare-col.chat h3 { color: #991B1B; }
+  .compare-col.code h3 { color: #166534; }
+  .compare-item { display: flex; gap: 10px; padding: 7px 0; font-size: 14.5px; align-items: center; }
+  .compare-item .icon { font-size: 16px; flex-shrink: 0; }
+  .tagline { text-align: center; margin-top: 16px; font-size: 15px; color: var(--gray-500); font-style: italic; }
+
+  /* ── CAPABILITY CARDS (Section 2) ── */
+  .cap-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+  .cap-card { background: var(--gray-50); border: 2px solid var(--gray-200); border-radius: 14px; padding: 22px; }
+  .cap-icon { font-size: 30px; margin-bottom: 10px; }
+  .cap-title { font-size: 16px; font-weight: 800; color: var(--gray-900); margin-bottom: 6px; }
+  .cap-desc { font-size: 13.5px; color: var(--gray-700); line-height: 1.45; }
+  .cap-impact { font-size: 12px; color: var(--orange); font-weight: 600; margin-top: 8px; }
+
+  /* ── WORKFLOW (Section 3) ── */
+  .workflow { display: flex; align-items: stretch; gap: 0; }
+  .wf-step { flex: 1; background: var(--orange-bg); border: 2px solid var(--orange-100); padding: 18px; position: relative; }
+  .wf-step:first-child { border-radius: 14px 0 0 14px; }
+  .wf-step:last-child { border-radius: 0 14px 14px 0; }
+  .wf-step-title { font-size: 15px; font-weight: 800; color: var(--orange); margin-bottom: 8px; }
+  .wf-step ul { list-style: none; font-size: 13px; color: var(--gray-700); line-height: 1.6; }
+  .wf-step ul li::before { content: "&#8226; "; color: var(--orange); }
+  .wf-arrow { display: flex; align-items: center; font-size: 26px; color: var(--orange); padding: 0 6px; background: var(--orange-bg); border-top: 2px solid var(--orange-100); border-bottom: 2px solid var(--orange-100); }
+  .wf-examples { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 18px; }
+  .wf-ex { background: var(--gray-50); border-radius: 10px; padding: 12px 16px; font-size: 13px; color: var(--gray-700); text-align: center; border: 1px solid var(--gray-200); }
+  .wf-ex strong { color: var(--orange); display: block; margin-bottom: 4px; }
+
+  /* ── GETTING STARTED (Section 4) ── */
+  .gs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .gs-box { background: var(--gray-50); border: 2px solid var(--gray-200); border-radius: 14px; padding: 24px; }
+  .gs-box h4 { font-size: 16px; font-weight: 800; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+  .code-block { background: var(--dark); color: #E2E8F0; font-family: var(--mono); font-size: 13px; padding: 16px 20px; border-radius: 10px; line-height: 1.7; white-space: pre; overflow: hidden; }
+  .code-comment { color: #64748B; }
+  .req-list { list-style: none; font-size: 14px; color: var(--gray-700); line-height: 1.8; }
+  .req-list li::before { content: "&#9745; "; }
+
+  /* ── MCP (Section 5) ── */
+  .mcp-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 18px; }
+  .mcp-cat { background: var(--gray-50); border: 2px solid var(--gray-200); border-radius: 12px; padding: 16px; }
+  .mcp-cat-title { font-size: 13px; font-weight: 800; color: var(--orange); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .mcp-tools { display: flex; flex-wrap: wrap; gap: 6px; }
+  .mcp-tool { background: var(--white); border: 1px solid var(--gray-300); border-radius: 6px; padding: 3px 10px; font-size: 12.5px; color: var(--gray-700); font-weight: 500; }
+
+  /* ── COMMANDS SUMMARY (Section 6) ── */
+  .cmd-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  .cmd-card { background: var(--gray-50); border-radius: 12px; padding: 16px; border: 1px solid var(--gray-200); }
+  .cmd-card-title { font-size: 14px; font-weight: 800; color: var(--orange); margin-bottom: 10px; }
+  .cmd-mini { font-family: var(--mono); font-size: 12.5px; color: var(--gray-700); line-height: 1.8; }
+  .cmd-mini strong { color: var(--gray-900); }
+
+  /* ── SKILLS & CLAUDE.MD (Section 7) ── */
+  .sc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .sc-box { background: var(--gray-50); border: 2px solid var(--gray-200); border-radius: 14px; padding: 24px; }
+  .sc-box h4 { font-size: 17px; font-weight: 800; margin-bottom: 12px; }
+
+  /* ── PROMPTING (Section 8) ── */
+  .prompt-table { width: 100%; border-collapse: collapse; border-radius: 12px; overflow: hidden; }
+  .prompt-table th { background: var(--orange); color: var(--white); padding: 12px 18px; text-align: left; font-size: 14px; font-weight: 700; }
+  .prompt-table td { padding: 10px 18px; font-size: 13.5px; border-bottom: 1px solid var(--gray-200); }
+  .prompt-table tr:nth-child(even) td { background: var(--gray-50); }
+  .pro-box { background: var(--orange-bg); border: 2px solid var(--orange-100); border-radius: 14px; padding: 22px; margin-top: 18px; }
+  .pro-box h4 { color: var(--orange); font-size: 16px; font-weight: 800; margin-bottom: 12px; }
+  .pro-steps { list-style: none; counter-reset: step; }
+  .pro-steps li { counter-increment: step; padding: 4px 0; font-size: 14px; color: var(--gray-700); }
+  .pro-steps li::before { content: counter(step) ". "; font-weight: 800; color: var(--orange); }
+
+  /* ── PRICING (Section 9) ── */
+  .price-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+  .price-table { width: 100%; border-collapse: collapse; border-radius: 12px; overflow: hidden; border: 2px solid var(--gray-200); }
+  .price-table th { background: var(--dark); color: var(--white); padding: 12px 18px; text-align: left; font-size: 14px; }
+  .price-table td { padding: 10px 18px; font-size: 13.5px; border-bottom: 1px solid var(--gray-200); }
+  .price-table tr:nth-child(even) td { background: var(--gray-50); }
+  .price-table .model-name { font-weight: 700; color: var(--orange); }
+
+  /* ── DARK SECTION ── */
+  .dark-section { background: var(--dark); color: var(--white); }
+  .dark-section .section-title { color: var(--white); }
+
+  /* ── FOOTER ── */
+  .footer { background: var(--dark); color: var(--gray-400); padding: 24px 70px; display: flex; justify-content: space-between; font-size: 14px; }
+  .footer strong { color: var(--white); }
+  .footer-badge { background: var(--orange); color: var(--white); padding: 4px 14px; border-radius: 6px; font-weight: 700; font-size: 12px; }
+</style>
+</head>
+<body>
+
+<!-- ══════ HERO ══════ -->
+<section class="hero">
+  <div class="hero-top">
+    <div>
+      <h1>Master <span>Claude Code</span></h1>
+      <p class="hero-sub">The Complete Guide for Everyone &mdash; Updated February 2026</p>
+    </div>
+    <div class="hero-right-group">
+      <div class="hero-badge">Updated February 2026</div>
+      <div class="hero-models">Opus 4.6 &bull; Sonnet 4.5 &bull; Haiku</div>
+      <div style="margin-top: 8px;"><a href="https://twitter.com/ersinyilmaz?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-show-count="false">Follow @ersinyilmaz</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ 1. WHY CLAUDE CODE ══════ -->
+<section class="section">
+  <div class="section-header">
+    <div class="section-num">1</div>
+    <div class="section-title">Why Claude Code Changes Everything</div>
+  </div>
+  <div class="compare-grid">
+    <div class="compare-col chat">
+      <h3>&#128172; Chat Window</h3>
+      <div class="compare-item"><span class="icon">&#10060;</span> Upload limits</div>
+      <div class="compare-item"><span class="icon">&#10060;</span> Sessions expire</div>
+      <div class="compare-item"><span class="icon">&#10060;</span> You do everything</div>
+      <div class="compare-item"><span class="icon">&#10060;</span> Copy-paste results</div>
+    </div>
+    <div class="compare-col vs">vs</div>
+    <div class="compare-col code">
+      <h3>&#9889; Claude Code</h3>
+      <div class="compare-item"><span class="icon">&#9989;</span> Full system access, any file</div>
+      <div class="compare-item"><span class="icon">&#9989;</span> Hours-long persistent tasks</div>
+      <div class="compare-item"><span class="icon">&#9989;</span> AI teammates &amp; subagents</div>
+      <div class="compare-item"><span class="icon">&#9989;</span> Direct file &amp; system changes</div>
+    </div>
+  </div>
+  <p class="tagline">"From Assistant to Operating System &mdash; a capable teammate who can actually execute."</p>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════ 2. CAPABILITIES ══════ -->
+<section class="section">
+  <div class="section-header">
+    <div class="section-num">2</div>
+    <div class="section-title">What Claude Code Can Do</div>
+  </div>
+  <div class="cap-grid">
+    <div class="cap-card">
+      <div class="cap-icon">&#128193;</div>
+      <div class="cap-title">Full File System Access</div>
+      <div class="cap-desc">Read, write, create, organize any file on your computer. No upload limits, no restrictions.</div>
+      <div class="cap-impact">"Process 10,000 files in minutes"</div>
+    </div>
+    <div class="cap-card">
+      <div class="cap-icon">&#9000;</div>
+      <div class="cap-title">Tool &amp; Command Execution</div>
+      <div class="cap-desc">Run shell commands, execute scripts, manage Git, install packages &mdash; all through natural language.</div>
+      <div class="cap-impact">"Non-coders running bash without syntax"</div>
+    </div>
+    <div class="cap-card">
+      <div class="cap-icon">&#128268;</div>
+      <div class="cap-title">MCP Connections (200+)</div>
+      <div class="cap-desc">Connect to GitHub, Notion, Slack, Jira, databases, APIs. One interface for your entire tool ecosystem.</div>
+      <div class="cap-impact">"USB-C for AI: one protocol, all tools"</div>
+    </div>
+    <div class="cap-card">
+      <div class="cap-icon">&#129302;</div>
+      <div class="cap-title">Multi-Agent Work</div>
+      <div class="cap-desc">Subagents work in parallel, checkpoints let you rewind, background tasks run while you work.</div>
+      <div class="cap-impact">"Like having 5 junior developers"</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════ 3. WORKFLOW ══════ -->
+<section class="section">
+  <div class="section-header">
+    <div class="section-num">3</div>
+    <div class="section-title">The Claude Code Workflow</div>
+  </div>
+  <div class="workflow">
+    <div class="wf-step">
+      <div class="wf-step-title">Analyze &amp; Research</div>
+      <ul>
+        <li>Synthesize feedback</li>
+        <li>Research competitors</li>
+        <li>Read &amp; summarize files</li>
+        <li>Extract insights</li>
+      </ul>
+    </div>
+    <div class="wf-arrow">&#10132;</div>
+    <div class="wf-step">
+      <div class="wf-step-title">Plan &amp; Decide</div>
+      <ul>
+        <li>Draft PRDs from notes</li>
+        <li>Create roadmap priorities</li>
+        <li>Generate strategy options</li>
+        <li>Build decision frameworks</li>
+      </ul>
+    </div>
+    <div class="wf-arrow">&#10132;</div>
+    <div class="wf-step">
+      <div class="wf-step-title">Create &amp; Execute</div>
+      <ul>
+        <li>Write code &amp; prototypes</li>
+        <li>Generate presentations</li>
+        <li>Create reports &amp; docs</li>
+        <li>Build dashboards</li>
+      </ul>
+    </div>
+    <div class="wf-arrow">&#10132;</div>
+    <div class="wf-step">
+      <div class="wf-step-title">Scale &amp; Repeat</div>
+      <ul>
+        <li>Set up recurring workflows</li>
+        <li>Connect tools via MCP</li>
+        <li>Create reusable skills</li>
+        <li>Schedule batch tasks</li>
+      </ul>
+    </div>
+  </div>
+  <div class="wf-examples">
+    <div class="wf-ex"><strong>For Product Managers</strong>Meeting transcript &#8594; PRD auto-drafted</div>
+    <div class="wf-ex"><strong>For Developers</strong>Code review &#8594; Jira tickets created</div>
+    <div class="wf-ex"><strong>For Data Teams</strong>Dashboard data &#8594; Slack summary posted</div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════ 4. GETTING STARTED ══════ -->
+<section class="section">
+  <div class="section-header">
+    <div class="section-num">4</div>
+    <div class="section-title">Getting Started</div>
+  </div>
+  <div class="gs-grid">
+    <div class="gs-box">
+      <h4>&#128187; Setup (Mac/Linux)</h4>
+      <div class="code-block"><span class="code-comment"># Install Claude Code</span>
+curl -fsSL https://claude.ai/install.sh | bash
+
+<span class="code-comment"># Navigate to your project</span>
+cd ~/your-project-folder
+claude</div>
+      <h4 style="margin-top: 18px;">&#127992; Windows (PowerShell)</h4>
+      <div class="code-block">irm https://claude.ai/install.ps1 | iex
+
+<span class="code-comment"># Then navigate to your folder</span>
+cd ~\your-project-folder
+claude</div>
+    </div>
+    <div class="gs-box">
+      <h4>&#9745; Requirements</h4>
+      <ul class="req-list">
+        <li>macOS 13+, Ubuntu 20+, or Windows 10+</li>
+        <li>Git Bash or WSL for Windows</li>
+        <li>Node.js 18+ (bundled with installer)</li>
+        <li>Claude Pro ($20/mo) or Max ($100-200/mo)</li>
+        <li>Or API credits (pay-per-use)</li>
+      </ul>
+      <h4 style="margin-top: 18px;">&#128161; Best Experience</h4>
+      <ul class="req-list">
+        <li>Cursor IDE or VS Code + integrated terminal</li>
+        <li>iTerm2 / Warp for terminal (macOS)</li>
+        <li>Multiple terminal tabs for parallel sessions</li>
+        <li>System notifications enabled (idle alerts)</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════ 5. MCP ══════ -->
+<section class="section">
+  <div class="section-header">
+    <div class="section-num">5</div>
+    <div class="section-title">Connect Everything (MCP)</div>
+  </div>
+  <p style="font-size: 15px; color: var(--gray-700); margin-bottom: 18px;"><strong>Model Context Protocol</strong> &mdash; an open standard that connects Claude to your tools. Think of it as USB-C for AI: one protocol, hundreds of connections.</p>
+  <div class="mcp-grid">
+    <div class="mcp-cat">
+      <div class="mcp-cat-title">Developer Tools</div>
+      <div class="mcp-tools">
+        <span class="mcp-tool">GitHub</span>
+        <span class="mcp-tool">Sentry</span>
+        <span class="mcp-tool">Linear</span>
+        <span class="mcp-tool">GitLab</span>
+        <span class="mcp-tool">Jira</span>
+      </div>
+    </div>
+    <div class="mcp-cat">
+      <div class="mcp-cat-title">Productivity</div>
+      <div class="mcp-tools">
+        <span class="mcp-tool">Notion</span>
+        <span class="mcp-tool">Slack</span>
+        <span class="mcp-tool">Google Drive</span>
+        <span class="mcp-tool">Todoist</span>
+      </div>
+    </div>
+    <div class="mcp-cat">
+      <div class="mcp-cat-title">Data &amp; Research</div>
+      <div class="mcp-tools">
+        <span class="mcp-tool">Perplexity</span>
+        <span class="mcp-tool">PostgreSQL</span>
+        <span class="mcp-tool">Brave</span>
+        <span class="mcp-tool">Filesystem</span>
+      </div>
+    </div>
+    <div class="mcp-cat">
+      <div class="mcp-cat-title">Communication</div>
+      <div class="mcp-tools">
+        <span class="mcp-tool">Gmail</span>
+        <span class="mcp-tool">Typefully</span>
+        <span class="mcp-tool">Buffer</span>
+        <span class="mcp-tool">Discord</span>
+      </div>
+    </div>
+  </div>
+  <div class="code-block" style="font-size: 13px;">claude mcp add --transport http https://mcp.notion.com/mcp     <span class="code-comment"># Quick add any MCP server</span></div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════ 6. ESSENTIAL COMMANDS ══════ -->
+<section class="section">
+  <div class="section-header">
+    <div class="section-num">6</div>
+    <div class="section-title">Essential Commands</div>
+  </div>
+  <div class="cmd-grid">
+    <div class="cmd-card">
+      <div class="cmd-card-title">Slash Commands</div>
+      <div class="cmd-mini">
+        <strong>/clear</strong> &mdash; Reset context<br>
+        <strong>/compact</strong> &mdash; Compress to save tokens<br>
+        <strong>/context</strong> &mdash; Visualize context usage<br>
+        <strong>/model</strong> &mdash; Switch model + effort<br>
+        <strong>/cost</strong> &mdash; Token &amp; cost usage<br>
+        <strong>/tasks</strong> &mdash; Background tasks<br>
+        <strong>/plan</strong> &mdash; Enter plan mode<br>
+        <strong>/rewind</strong> &mdash; Rewind conversation
+      </div>
+    </div>
+    <div class="cmd-card">
+      <div class="cmd-card-title">Keyboard Shortcuts</div>
+      <div class="cmd-mini">
+        <strong>Esc</strong> &mdash; Cancel/Stop<br>
+        <strong>Esc+Esc</strong> &mdash; Rewind checkpoint<br>
+        <strong>Shift+Tab</strong> &mdash; Cycle permission modes<br>
+        <strong>Ctrl+V</strong> &mdash; Paste image<br>
+        <strong>Alt+T</strong> &mdash; Extended Thinking<br>
+        <strong>Ctrl+B</strong> &mdash; Background task<br>
+        <strong>@</strong> &mdash; File mention<br>
+        <strong>!</strong> &mdash; Run shell directly
+      </div>
+    </div>
+    <div class="cmd-card">
+      <div class="cmd-card-title">CLI Flags</div>
+      <div class="cmd-mini">
+        <strong>-p "query"</strong> &mdash; Print mode<br>
+        <strong>-c / --continue</strong> &mdash; Continue session<br>
+        <strong>-r / --resume</strong> &mdash; Resume session<br>
+        <strong>--add-dir</strong> &mdash; Add directory<br>
+        <strong>--chrome</strong> &mdash; Browser mode<br>
+        <strong>--remote</strong> &mdash; Web session<br>
+        <strong>--max-budget-usd</strong> &mdash; Cost limit<br>
+        <strong>--json-schema</strong> &mdash; Structured output
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════ 7. SKILLS & CLAUDE.MD ══════ -->
+<section class="section">
+  <div class="section-header">
+    <div class="section-num">7</div>
+    <div class="section-title">Skills &amp; CLAUDE.md</div>
+  </div>
+  <div class="sc-grid">
+    <div class="sc-box">
+      <h4>&#9889; Claude Skills (Reusable Automations)</h4>
+      <p style="font-size: 14px; color: var(--gray-700); margin-bottom: 14px;">Task-specific instruction packages that Claude auto-loads when relevant.</p>
+      <div class="code-block" style="font-size: 12.5px;"><span class="code-comment"># Folder Structure</span>
+~/.claude/skills/
+&#9500;&#9472;&#9472; data-cleaner/
+&#9474;   &#9492;&#9472;&#9472; SKILL.md
+&#9500;&#9472;&#9472; prd-generator/
+&#9474;   &#9492;&#9472;&#9472; SKILL.md
+&#9492;&#9472;&#9472; linkedin-writer/
+    &#9492;&#9472;&#9472; SKILL.md</div>
+      <p style="font-size: 13px; color: var(--gray-500); margin-top: 12px;"><strong>Built-in:</strong> docx, xlsx, pptx, pdf processing</p>
+    </div>
+    <div class="sc-box">
+      <h4>&#128218; CLAUDE.md (Project Memory)</h4>
+      <p style="font-size: 14px; color: var(--gray-700); margin-bottom: 14px;">A markdown file that gives Claude permanent context about your project.</p>
+      <div class="code-block" style="font-size: 12.5px;"><span class="code-comment"># Project: Marketing Dashboard</span>
+
+## Key Commands
+- npm run build
+- npm test
+
+## Style Guide
+- Use TypeScript
+- Follow existing patterns
+
+## Important Context
+- Data source: /data/analytics.csv
+- Deploy target: Vercel</div>
+      <p style="font-size: 13px; color: var(--gray-500); margin-top: 12px;">
+        <strong>Global:</strong> ~/.claude/CLAUDE.md &bull;
+        <strong>Project:</strong> .claude/CLAUDE.md &bull;
+        <strong>Local:</strong> .claude/CLAUDE.local.md
+      </p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════ 8. PROMPTING TECHNIQUES ══════ -->
+<section class="section">
+  <div class="section-header">
+    <div class="section-num">8</div>
+    <div class="section-title">Prompting Techniques</div>
+  </div>
+  <table class="prompt-table">
+    <thead>
+      <tr><th>Technique</th><th>When to Use</th><th>Example</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Be Specific</strong></td><td>Always</td><td>"Remove rows where column B is empty" not "Clean this CSV"</td></tr>
+      <tr><td><strong>Give Examples</strong></td><td>Output formatting</td><td>Show 1-2 examples of what you want</td></tr>
+      <tr><td><strong>Chain Steps</strong></td><td>Complex tasks</td><td>"First analyze, then summarize, then create action items"</td></tr>
+      <tr><td><strong>Set Constraints</strong></td><td>Quality control</td><td>"Max 500 words" or "Only use data from 2024"</td></tr>
+      <tr><td><strong>Assign Roles</strong></td><td>Expertise needed</td><td>"Act as a senior data analyst reviewing this dataset"</td></tr>
+      <tr><td><strong>Use /clear Often</strong></td><td>Between tasks</td><td>Reset context between unrelated work to avoid confusion</td></tr>
+    </tbody>
+  </table>
+  <div class="pro-box">
+    <h4>&#127942; Pro Pattern: Checkpoint + Iterate</h4>
+    <ol class="pro-steps">
+      <li>Ask Claude to make a plan first (use Plan mode via Shift+Tab)</li>
+      <li>Review the plan until you like it</li>
+      <li>Let it create checkpoints as it executes</li>
+      <li>Rewind (Esc twice) if something goes wrong</li>
+      <li>Iterate with specific feedback until perfect</li>
+    </ol>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════ 9. MODELS & PRICING ══════ -->
+<section class="section">
+  <div class="section-header">
+    <div class="section-num">9</div>
+    <div class="section-title">Models &amp; Pricing</div>
+  </div>
+  <div class="price-grid">
+    <div>
+      <table class="price-table">
+        <thead><tr><th>Model</th><th>Best For</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td class="model-name">Opus 4.6</td><td>Deep reasoning, architecture</td><td>Default for Max plan</td></tr>
+          <tr><td class="model-name">Sonnet 4.5</td><td>Daily coding, fast execution</td><td>Default for Pro plan</td></tr>
+          <tr><td class="model-name">Haiku</td><td>Quick tasks, simple queries</td><td>Cheapest, fastest</td></tr>
+        </tbody>
+      </table>
+      <p style="font-size: 13px; color: var(--gray-500); margin-top: 12px;">
+        <strong>Effort Levels</strong> (Opus 4.6): Low &#8594; Medium &#8594; High &bull;
+        <strong>Fast Mode</strong> available &bull;
+        <strong>Extended:</strong> sonnet[1m] for 1M token context
+      </p>
+    </div>
+    <div>
+      <table class="price-table">
+        <thead><tr><th>Plan</th><th>Monthly</th><th>Best For</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Pro</strong></td><td>$20</td><td>Light usage, short tasks</td></tr>
+          <tr><td><strong>Max 5x</strong></td><td>$100</td><td>Daily use, larger projects</td></tr>
+          <tr><td><strong>Max 20x</strong></td><td>$200</td><td>Power users, heavy automation</td></tr>
+          <tr><td><strong>API</strong></td><td>Pay-per-use</td><td>CI/CD, enterprise pipelines</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ FOOTER ══════ -->
+<div class="footer">
+  <span><span class="footer-badge">Built with Claude Code</span> &nbsp; Master Claude Code &bull; <strong>February 2026</strong></span>
+  <span>Opus 4.6 &bull; Sonnet 4.5 &bull; Haiku &bull; 200+ MCP Connections</span>
+</div>
+
+</body>
+</html>
